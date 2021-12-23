@@ -428,7 +428,7 @@ _make_bootmode_bios.syslinux.mbr() {
         sed "s|%ARCHISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g;
              s|%ARCH%|${arch}|g;
-             s|%COW_SPACESZE%|${cow_spacesize}|g;" \
+             s|%COW_SPACESIZE%|${cow_spacesize}|g;" \
              "${_cfg}" > "${isofs_dir}/syslinux/${_cfg##*/}"
     done
     if [[ -e "${profile}/syslinux/splash.png" ]]; then
@@ -632,7 +632,7 @@ _make_bootmode_uefi-x64.systemd-boot.esp() {
         sed "s|%ARCHISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g;
              s|%ARCH%|${arch}|g;
-             s|%COW_SPACESZE%|${cow_spacesize}|g;" \
+             s|%COW_SPACESIZE%|${cow_spacesize}|g;" \
             "${_conf}" | mcopy -i "${work_dir}/efiboot.img" - "::/loader/entries/${_conf##*/}"
     done
 
@@ -672,7 +672,7 @@ _make_bootmode_uefi-x64.systemd-boot.eltorito() {
         sed "s|%ARCHISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g;
              s|%ARCH%|${arch}|g;
-             s|%COW_SPACESZE%|${cow_spacesize}|g;" \
+             s|%COW_SPACESIZE%|${cow_spacesize}|g;" \
             "${_conf}" > "${isofs_dir}/loader/entries/${_conf##*/}"
     done
 
