@@ -38,6 +38,7 @@ airootfs_image_type=""
 airootfs_image_tool_options=()
 cert_list=()
 sign_netboot_artifacts=""
+cow_spacesize=""
 declare -A file_permissions=()
 efiboot_files=()
 # adapted from GRUB_EARLY_INITRD_LINUX_STOCK in https://git.savannah.gnu.org/cgit/grub.git/tree/util/grub-mkconfig.in
@@ -134,6 +135,7 @@ _show_config() {
     _msg_info "            ISO publisher:   ${iso_publisher}"
     _msg_info "          ISO application:   ${iso_application}"
     _msg_info "               Boot modes:   ${bootmodes[*]:-None}"
+    _msg_info "           Cow space size:   ${cow_spacesize}"
     _msg_info "            Packages File:   ${buildmode_packages}"
     _msg_info "                 Packages:   ${buildmode_pkg_list[*]}"
 }
@@ -425,7 +427,8 @@ _make_bootmode_bios.syslinux.mbr() {
     for _cfg in "${profile}/syslinux/"*.cfg; do
         sed "s|%ARCHISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g;
-             s|%ARCH%|${arch}|g" \
+             s|%ARCH%|${arch}|g;
+             s|%COW_SPACESIZE%|${cow_spacesize}|g;" \
              "${_cfg}" > "${isofs_dir}/syslinux/${_cfg##*/}"
     done
     if [[ -e "${profile}/syslinux/splash.png" ]]; then
@@ -724,7 +727,8 @@ _make_bootmode_uefi-x64.systemd-boot.esp() {
     for _conf in "${profile}/efiboot/loader/entries/"*".conf"; do
         sed "s|%ARCHISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g;
-             s|%ARCH%|${arch}|g" \
+             s|%ARCH%|${arch}|g;
+             s|%COW_SPACESIZE%|${cow_spacesize}|g;" \
             "${_conf}" | mcopy -i "${work_dir}/efiboot.img" - "::/loader/entries/${_conf##*/}"
     done
 
@@ -763,7 +767,8 @@ _make_bootmode_uefi-x64.systemd-boot.eltorito() {
     for _conf in "${profile}/efiboot/loader/entries/"*".conf"; do
         sed "s|%ARCHISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g;
-             s|%ARCH%|${arch}|g" \
+             s|%ARCH%|${arch}|g;
+             s|%COW_SPACESIZE%|${cow_spacesize}|g;" \
             "${_conf}" > "${isofs_dir}/loader/entries/${_conf##*/}"
     done
 
@@ -1515,6 +1520,7 @@ _set_overrides() {
     # Set variables that do not have overrides
     [[ -n "$airootfs_image_type" ]] || airootfs_image_type="squashfs"
     [[ -n "$iso_name" ]] || iso_name="${app_name}"
+    [[ -n "${cow_spacesize}" ]] || cow_spacesize="256M"
 }
 
 _export_gpg_publickey() {
