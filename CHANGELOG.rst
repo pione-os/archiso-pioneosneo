@@ -9,6 +9,8 @@ Added
 -----
 
 - Add ``efibootimg`` to ``mkarchiso`` to abstract the FAT image path.
+- Change the releng profile's networking setup from ``systemd-networkd`` and
+  ``iwd`` to ``networkmanager`` and ``wpa_supplicant``.
 
 Changed
 -------
