@@ -1215,7 +1215,9 @@ _prepare_airootfs_image() {
         _mk_pgp_signature "${airootfs_image_filename}"
     fi
     if [[ -v cert_list ]]; then
-        _cms_sign_artifact "${airootfs_image_filename}"
+        # Sign the airootfs filesystem image, but do not include the certificates in the signature.
+        # hooks/archiso will use the certificates inside the initramfs image when verifying.
+        _cms_sign_artifact "${airootfs_image_filename}" nocerts
     fi
 }
 
@@ -1237,7 +1239,6 @@ _cms_sign_artifact() {
     local openssl_flags=(
         "-sign"
         "-binary"
-        "-nocerts"
         "-noattr"
         "-outform" "DER" "-out" "${artifact}.cms.sig"
         "-in" "${artifact}"
@@ -1245,8 +1246,14 @@ _cms_sign_artifact() {
         "-inkey" "${cert_list[1]}"
     )
 
+    # Include the CA certificate in the signature
     if (( ${#cert_list[@]} > 2 )); then
         openssl_flags+=("-certfile" "${cert_list[2]}")
+    fi
+    # Do not include any certificates in the signature. The signer and CA certificates will need to be provided via
+    # the -certfile and -CAfile options when verifying the signature.
+    if [[ "${2-}" == 'nocerts' ]]; then
+        openssl_flags+=('-nocerts')
     fi
 
     _msg_info "Signing ${artifact} image using openssl cms..."
@@ -1942,6 +1949,10 @@ _build_buildmode_bootstrap() {
     _run_once _make_pkglist
     _run_once _cleanup_pacstrap_dir
     _run_once _build_bootstrap_image
+
+    if [[ -v cert_list ]]; then
+        _cms_sign_artifact "${out_dir}/${image_name}"
+    fi
 }
 
 # Build the netboot buildmode
@@ -1969,6 +1980,10 @@ _build_buildmode_iso() {
     efibootimg="${work_dir}/efiboot.img"
     _build_iso_base
     _run_once _build_iso_image
+
+    if [[ -v cert_list ]]; then
+        _cms_sign_artifact "${out_dir}/${image_name}"
+    fi
 }
 
 # build all buildmodes
