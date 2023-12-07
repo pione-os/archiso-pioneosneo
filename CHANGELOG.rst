@@ -9,6 +9,9 @@ Added
 -----
 
 - Add bcachefs-tools to releng for access to bcachefs userspace tools.
+- Sign the resulting ISO and bootstrap tarball with ``openssl cms`` if a codesigning certificate is provided. The
+  signature files, unlike the signature of the root file system image, will include the signer's certificate and also
+  the CA certificate, if specified.
 
 Changed
 -------
