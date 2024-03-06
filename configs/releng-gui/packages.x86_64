@@ -30,6 +30,7 @@ ethtool
 exfatprogs
 f2fs-tools
 fatresize
+firefox
 foot-terminfo
 fsarchiver
 gnu-netcat
@@ -51,6 +52,7 @@ less
 lftp
 libfido2
 libusb-compat
+lightdm
 linux
 linux-atm
 linux-firmware
@@ -73,6 +75,8 @@ mtools
 nano
 nbd
 ndisc6
+networkmanager
+network-manager-applet
 nfs-utils
 nilfs-utils
 nmap
@@ -127,19 +131,11 @@ wireless_tools
 wpa_supplicant
 wvdial
 xfsprogs
-xl2tpd
-zsh
-
-
 xfce4
 xfce4-terminal
 xfce4-settings
-#plasma-desktop
-#plasma-nm
-#plasma-settings
+xl2tpd
 xorg-server
 xorg-xrandr
 xorg-xinit
-networkmanager
-firefox
-lightdm
+zsh
