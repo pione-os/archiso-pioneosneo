@@ -129,3 +129,17 @@ wvdial
 xfsprogs
 xl2tpd
 zsh
+
+
+xfce4
+xfce4-terminal
+xfce4-settings
+#plasma-desktop
+#plasma-nm
+#plasma-settings
+xorg-server
+xorg-xrandr
+xorg-xinit
+networkmanager
+firefox
+lightdm
