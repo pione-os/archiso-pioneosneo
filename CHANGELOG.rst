@@ -11,6 +11,8 @@ Added
 Changed
 -------
 
+- Use 4 MiB OVMF files in ``run_archiso`` instead of the old 2 MiB ones.
+
 Deprecated
 ----------
 
