@@ -11,6 +11,8 @@ Added
 Changed
 -------
 
+- Remove 300 KiB padding needed for CDs if the ISO exceeds the maximum size of a CD.
+
 Deprecated
 ----------
 
